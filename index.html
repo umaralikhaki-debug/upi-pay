@@ -20,9 +20,6 @@ button{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-
 .copy{background:#fff;color:#0b3d91;border:1px solid #0b3d91;padding:8px 15px;border-radius:20px;cursor:pointer;margin-top:8px}
 .note{font-size:12px;color:#666;text-align:center;margin-top:12px}
 .success{display:none;text-align:center;padding:20px}
-.gen{background:#f9f9f9;border-top:1px dashed #ccc;padding:15px;margin-top:15px}
-.gen h4{margin:0 0 5px;text-align:center}
-#genLink{font-size:12px;word-break:break-all;background:#fff;padding:10px;border:1px dashed #0b3d91;border-radius:8px;display:none;margin-top:10px}
 </style>
 </head>
 <body>
@@ -35,27 +32,12 @@ button{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-
 <hr>
 <h3 style="text-align:center">Payment Confirmation</h3>
 <input id="name" placeholder="Apna Naam *" />
-<div style="display:flex;gap:8px">
-<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(100)">₹100</button>
-<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(500)">₹500</button>
-<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(1000)">₹1000</button>
-<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(4000)">₹4000</button>
-</div>
-<input id="amount" type="number" placeholder="Amount - Yahan Edit Bhi Kar Sakte Ho *" />
+<input id="amount" type="number" placeholder="Amount *" />
 <input id="utr" placeholder="UTR / Transaction ID *" />
-<input id="phone" placeholder="WhatsApp Number (Optional)" />
 <label style="font-size:13px;color:#555">Payment Screenshot</label>
 <input id="shot" type="file" accept="image/*" />
 <button onclick="submitPay()">Submit Confirmation ✅</button>
-<p class="note">Amount link se pehle se bhara aayega, chaaho to edit kar sakte ho.</p>
-<div class="gen">
-<h4>🔗 Apna Payment Link Banao</h4>
-<input id="gName" placeholder="Naam - jese kreditapple" />
-<input id="gAmt" type="number" placeholder="Amount - jese 4000" />
-<button onclick="makeLink()" style="background:#00a651">Link Banao</button>
-<div id="genLink"></div>
-<button id="copyLinkBtn" style="display:none;background:#333" onclick="copyLink()">Copy Link</button>
-</div>
+<p class="note">Amount link se pehle se bhara aayega.</p>
 </div>
 <div class="success" id="successBox">
 <h2>✅ Submitted!</h2>
@@ -73,7 +55,6 @@ document.getElementById('vpaText').innerText = vpa;
 document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent("upi://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR");
 if(nm){ document.getElementById('displayName').innerText = nm + " - Payment"; document.getElementById('name').value = nm; }
 if(amt) document.getElementById('amount').value = amt;
-function setAmt(v){ document.getElementById('amount').value = v; }
 function copyUPI(){ navigator.clipboard.writeText(vpa); alert("UPI Copy Ho Gaya!"); }
 function submitPay(){
   let n=document.getElementById('name').value;
@@ -84,18 +65,6 @@ function submitPay(){
   document.getElementById('successBox').style.display='block';
   document.getElementById('successText').innerHTML = "Naam: <b>"+n+"</b><br>Amount: <b>₹"+a+"</b><br>UTR: <b>"+u+"</b><br><br>Status: <b style='color:orange'>Pending Verification</b>";
 }
-function makeLink(){
-  let gn=document.getElementById('gName').value.trim();
-  let ga=document.getElementById('gAmt').value.trim();
-  if(!gn || !ga){ alert("Naam aur Amount bharo"); return; }
-  let base = window.location.origin + window.location.pathname;
-  let link = base + "?amntInput=" + encodeURIComponent(ga) + "&nameInput=" + encodeURIComponent(gn) + "&vpaInput=" + encodeURIComponent(vpa);
-  document.getElementById('genLink').style.display='block';
-  document.getElementById('genLink').innerText = link;
-  document.getElementById('copyLinkBtn').style.display='block';
-  window.generatedLink = link;
-}
-function copyLink(){ navigator.clipboard.writeText(window.generatedLink); alert("Link Copy Ho Gaya!"); }
 </script>
 </body>
 </html>
