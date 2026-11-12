@@ -1,13 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Repayment</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay - BharatPe</title>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f2f4f7;padding:15px}
+.card{max-width:420px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.1)}
+.top{background:#0b3d91;color:#fff;padding:20px;text-align:center}
+.top h2{margin:0;font-size:22px}
+.top p{margin:5px 0 0;opacity:.9;font-size:14px}
+.body{padding:20px}
+.qr{text-align:center}
+.qr img{width:200px;height:200px;border:1px solid #ddd;border-radius:10px;padding:5px}
+.upi{background:#eef2ff;padding:12px;border-radius:10px;text-align:center;margin:15px 0;font-weight:bold;word-break:break-all}
+input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+button{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
+.copy{background:#fff;color:#0b3d91;border:1px solid #0b3d91;padding:8px 15px;border-radius:20px;cursor:pointer;margin-top:8px}
+.note{font-size:12px;color:#666;text-align:center;margin-top:12px}
+.success{display:none;text-align:center;padding:20px}
+.gen{background:#f9f9f9;border-top:1px dashed #ccc;padding:15px;margin-top:15px}
+.gen h4{margin:0 0 5px;text-align:center}
+#genLink{font-size:12px;word-break:break-all;background:#fff;padding:10px;border:1px dashed #0b3d91;border-radius:8px;display:none;margin-top:10px}
+</style>
 </head>
-<body style="text-align:center; font-family:sans-serif; padding:40px; background:#f5f5f5;">
-<h1>Repayment - Rs 500</h1>
-<p>Neeche button dabao, UPI app khul jayega</p>
-<a href="upi://pay?pa=YOUR-UPI-ID&pn=Umar&am=500&cu=INR&tn=Repayment" style="background:black; color:white; padding:15px 30px; border-radius:10px; text-decoration:none; display:inline-block; font-size:18px;">Pay Now via UPI</a>
-<p style="margin-top:20px; color:#555;">UPI ID: YOUR-UPI-ID</p>
+<body>
+<div class="card">
+<div class="top"><h2 id="displayName">BharatPe Payment</h2><p>Scan QR ya UPI ID se Pay Karo</p></div>
+<div class="body" id="payBox">
+<div class="qr"><img id="qrImg" src="" alt="QR"></div>
+<div class="upi"><span>UPI ID</span><br><span id="vpaText">BHARATPE.90065511470@fbpe</span></div>
+<center><button class="copy" onclick="copyUPI()">Copy UPI ID</button></center>
+<hr>
+<h3 style="text-align:center">Payment Confirmation</h3>
+<input id="name" placeholder="Apna Naam *" />
+<div style="display:flex;gap:8px">
+<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(100)">₹100</button>
+<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(500)">₹500</button>
+<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(1000)">₹1000</button>
+<button type="button" style="flex:1;padding:10px;background:#eef2ff;color:#0b3d91;border:1px solid #0b3d91;margin:0" onclick="setAmt(4000)">₹4000</button>
+</div>
+<input id="amount" type="number" placeholder="Amount - Yahan Edit Bhi Kar Sakte Ho *" />
+<input id="utr" placeholder="UTR / Transaction ID *" />
+<input id="phone" placeholder="WhatsApp Number (Optional)" />
+<label style="font-size:13px;color:#555">Payment Screenshot</label>
+<input id="shot" type="file" accept="image/*" />
+<button onclick="submitPay()">Submit Confirmation ✅</button>
+<p class="note">Amount link se pehle se bhara aayega, chaaho to edit kar sakte ho.</p>
+<div class="gen">
+<h4>🔗 Apna Payment Link Banao</h4>
+<input id="gName" placeholder="Naam - jese kreditapple" />
+<input id="gAmt" type="number" placeholder="Amount - jese 4000" />
+<button onclick="makeLink()" style="background:#00a651">Link Banao</button>
+<div id="genLink"></div>
+<button id="copyLinkBtn" style="display:none;background:#333" onclick="copyLink()">Copy Link</button>
+</div>
+</div>
+<div class="success" id="successBox">
+<h2>✅ Submitted!</h2>
+<p id="successText"></p>
+<button onclick="location.reload()">Nayi Payment Karo</button>
+</div>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+let vpa = params.get('vpaInput') || "BHARATPE.90065511470@fbpe";
+let amt = params.get('amntInput') || "";
+let nm = params.get('nameInput') || "";
+vpa = vpa.trim(); amt = amt.trim(); nm = nm.trim();
+document.getElementById('vpaText').innerText = vpa;
+document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent("upi://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR");
+if(nm){ document.getElementById('displayName').innerText = nm + " - Payment"; document.getElementById('name').value = nm; }
+if(amt) document.getElementById('amount').value = amt;
+function setAmt(v){ document.getElementById('amount').value = v; }
+function copyUPI(){ navigator.clipboard.writeText(vpa); alert("UPI Copy Ho Gaya!"); }
+function submitPay(){
+  let n=document.getElementById('name').value;
+  let a=document.getElementById('amount').value;
+  let u=document.getElementById('utr').value;
+  if(!n || !a || !u){ alert("Please Naam, Amount aur UTR bharo"); return; }
+  document.getElementById('payBox').style.display='none';
+  document.getElementById('successBox').style.display='block';
+  document.getElementById('successText').innerHTML = "Naam: <b>"+n+"</b><br>Amount: <b>₹"+a+"</b><br>UTR: <b>"+u+"</b><br><br>Status: <b style='color:orange'>Pending Verification</b>";
+}
+function makeLink(){
+  let gn=document.getElementById('gName').value.trim();
+  let ga=document.getElementById('gAmt').value.trim();
+  if(!gn || !ga){ alert("Naam aur Amount bharo"); return; }
+  let base = window.location.origin + window.location.pathname;
+  let link = base + "?amntInput=" + encodeURIComponent(ga) + "&nameInput=" + encodeURIComponent(gn) + "&vpaInput=" + encodeURIComponent(vpa);
+  document.getElementById('genLink').style.display='block';
+  document.getElementById('genLink').innerText = link;
+  document.getElementById('copyLinkBtn').style.display='block';
+  window.generatedLink = link;
+}
+function copyLink(){ navigator.clipboard.writeText(window.generatedLink); alert("Link Copy Ho Gaya!"); }
+</script>
 </body>
 </html>
