@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -18,57 +18,10 @@ body{margin:0;background:#f2f4f7;padding:15px}
 input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
 button{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
 .copy{background:#fff;color:#0b3d91;border:1px solid #0b3d91;padding:8px 15px;border-radius:20px;cursor:pointer;margin-top:8px}
-.note{font-size:12px;color:#666;text-align:center;margin-top:12px}
-.success{display:none;text-align:center;padding:20px}
-</style>
-</head>
-<body>
-<div class="card">
-<div class="top"><h2 id="displayName">BharatPe Payment</h2><p>Scan QR ya UPI ID se Pay Karo</p></div>
-<div class="body" id="payBox">
-<div class="qr"><img id="qrImg" src="" alt="QR Code Loading..."></div>
-<div class="upi"><span>UPI ID</span><br><span id="vpaText">BHARATPE.90065511470@fbpe</span></div>
-<center><button class="copy" onclick="copyUPI()">Copy UPI ID</button></center>
-<hr>
-<h3 style="text-align:center">Payment Confirmation</h3>
-<input id="name" placeholder="Apna Naam *" />
-<input id="amount" type="number" placeholder="Amount *" />
-<input id="utr" placeholder="12 Digit UTR / Transaction ID *" maxlength="12" inputmode="numeric" />
-<label style="font-size:13px;color:#555">Payment Screenshot</label>
-<input id="shot" type="file" accept="image/*" />
-<button onclick="submitPay()">Submit Confirmation ✅</button>
-<p class="note">Amount link se pehle se bhara aayega.</p>
-</div>
-<div class="success" id="successBox">
-<h2>✅ Payment Confirmed!</h2>
-<p id="successText"></p>
-<button onclick="location.reload()">Nayi Payment Karo</button>
-</div>
-</div>
-<script>
-const params = new URLSearchParams(window.location.search);
-let vpa = params.get('vpaInput') || "BHARATPE.90065511470@fbpe";
-let amt = params.get('amntInput') || "";
-let nm = params.get('nameInput') || "";
-vpa = vpa.trim(); amt = amt.trim(); nm = nm.trim();
-document.getElementById('vpaText').innerText = vpa;
-let upiLink = "upi://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
-let qr = document.getElementById('qrImg');
-qr.src = "https://quickchart.io/qr?text=" + encodeURIComponent(upiLink) + "&size=220";
-qr.onerror = function(){ this.onerror=null; this.src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(upiLink); };
-if(nm){ document.getElementById('displayName').innerText = nm + " - Payment"; document.getElementById('name').value = nm; }
-if(amt) document.getElementById('amount').value = amt;
-function copyUPI(){ navigator.clipboard.writeText(vpa); alert("UPI Copy Ho Gaya!"); }
-function submitPay(){
-  let n=document.getElementById('name').value.trim();
-  let a=document.getElementById('amount').value.trim();
-  let u=document.getElementById('utr').value.trim();
-  if(!n || !a || !u){ alert("Please Naam, Amount aur UTR bharo"); return; }
-  if(u.length !== 12 || isNaN(u)){ alert("Please 12 Digit ka sahi UTR dalo"); return; }
-  document.getElementById('payBox').style.display='none';
-  document.getElementById('successBox').style.display='block';
-  document.getElementById('successText').innerHTML = "Naam: <b>"+n+"</b><br>Amount: <b>₹"+a+"</b><br>UTR: <b>"+u+"</b><br><br>Status: <b style='color:green;font-size:18px'>✅ Payment Confirmed</b><br><span style='font-size:12px;color:#666'>UTR Verified - 12 Digit</span>";
-}
-</script>
-</body>
-</html>
+.paynow{background:#00a651;font-size:18px;padding:16px}
+.appRow{display:flex;gap:8px;margin-top:10px}
+.appRow button{flex:1;padding:12px;font-size:13px;margin-top:0}
+.gpay{background:#fff;color:#000;border:2px solid #4285F4}
+.phonepe{background:#5f259f}
+.paytm{background:#00b9f1}
+.note{font-size:12px
