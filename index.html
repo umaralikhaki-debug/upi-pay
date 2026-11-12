@@ -26,45 +26,4 @@ button{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-
 <div class="card">
 <div class="top"><h2 id="displayName">BharatPe Payment</h2><p>Scan QR ya UPI ID se Pay Karo</p></div>
 <div class="body" id="payBox">
-<div class="qr"><img id="qrImg" src="" alt="QR"></div>
-<div class="upi"><span>UPI ID</span><br><span id="vpaText">BHARATPE.90065511470@fbpe</span></div>
-<center><button class="copy" onclick="copyUPI()">Copy UPI ID</button></center>
-<hr>
-<h3 style="text-align:center">Payment Confirmation</h3>
-<input id="name" placeholder="Apna Naam *" />
-<input id="amount" type="number" placeholder="Amount *" />
-<input id="utr" placeholder="UTR / Transaction ID *" />
-<label style="font-size:13px;color:#555">Payment Screenshot</label>
-<input id="shot" type="file" accept="image/*" />
-<button onclick="submitPay()">Submit Confirmation ✅</button>
-<p class="note">Amount link se pehle se bhara aayega.</p>
-</div>
-<div class="success" id="successBox">
-<h2>✅ Submitted!</h2>
-<p id="successText"></p>
-<button onclick="location.reload()">Nayi Payment Karo</button>
-</div>
-</div>
-<script>
-const params = new URLSearchParams(window.location.search);
-let vpa = params.get('vpaInput') || "BHARATPE.90065511470@fbpe";
-let amt = params.get('amntInput') || "";
-let nm = params.get('nameInput') || "";
-vpa = vpa.trim(); amt = amt.trim(); nm = nm.trim();
-document.getElementById('vpaText').innerText = vpa;
-document.getElementById('qrImg').src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent("upi://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR");
-if(nm){ document.getElementById('displayName').innerText = nm + " - Payment"; document.getElementById('name').value = nm; }
-if(amt) document.getElementById('amount').value = amt;
-function copyUPI(){ navigator.clipboard.writeText(vpa); alert("UPI Copy Ho Gaya!"); }
-function submitPay(){
-  let n=document.getElementById('name').value;
-  let a=document.getElementById('amount').value;
-  let u=document.getElementById('utr').value;
-  if(!n || !a || !u){ alert("Please Naam, Amount aur UTR bharo"); return; }
-  document.getElementById('payBox').style.display='none';
-  document.getElementById('successBox').style.display='block';
-  document.getElementById('successText').innerHTML = "Naam: <b>"+n+"</b><br>Amount: <b>₹"+a+"</b><br>UTR: <b>"+u+"</b><br><br>Status: <b style='color:orange'>Pending Verification</b>";
-}
-</script>
-</body>
-</html>
+<div class="qr"><img id="qrImg" src="" alt="QR"></div
