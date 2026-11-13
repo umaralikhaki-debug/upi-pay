@@ -1,1 +1,96 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>KreditApple</title><style>*{box-sizing:border-box;font-family:Arial}body{margin:0;background:#f6f6f6}.top{background:#ff5a1f;color:#fff;padding:15px;text-align:center;font-size:22px;font-weight:bold}.wrap{max-width:430px;margin:auto;background:#fff;min-height:100vh;padding-bottom:20px}.pen{background:#ff5a1f;color:#fff;margin:15px;border-radius:10px 10px 0 0;padding:15px;font-weight:bold}.box{display:flex;border:1px solid #eee;margin:0 15px;border-radius:0 0 10px 10px}.box div{flex:1;text-align:center;padding:18px 5px}.box div:first-child{border-right:1px solid #eee}.box small{color:#888}.box h2{margin:8px 0 0;font-size:28px}.ch{padding:20px 15px 0}.chBtn{border:1px solid #f0a080;color:#e86a2a;background:#fff;padding:9px 16px;border-radius:6px;margin:0 8px 10px 0}.chBtn.on{background:#ff5a1f;color:#fff}.row{display:flex;gap:12px;padding:18px 15px 0}.row button{flex:1;padding:13px;border-radius:8px;font-weight:bold}.rep{background:#ff5a1f;color:#fff;border:none}.ext{background:#fff;color:#e86a2a;border:1px solid #f0a080}.vou{text-align:right;padding:15px;color:#2a6cff}.warn{margin:0 15px;border:1px solid #ffb3a0;border-radius:12px;padding:14px;color:#666;font-size:14px}.un{text-align:center;font-size:13px;padding:20px 0}.card{max-width:420px;margin:auto;background:#fff;border-radius:16px;box-shadow:0 5px 20px rgba(0,0,0,.1);overflow:hidden}.ptop{background:#0b3d91;color:#fff;padding:20px;text-align:center}.ptop h2{margin:0}.pb{padding:20px}.qr{text-align:center}.qr img{width:220px;height:220px;border:1px solid #ddd;border-radius:10px;padding:5px}.upi{background:#eef2ff;padding:12px;border-radius:10px;text-align:center;margin:15px 0;font-weight:bold;word-break:break-all}input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px}.payBtn{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-radius:10px;font-weight:bold;margin-top:10px}.copy{background:#fff;color:#0b3d91;border:1px solid #0b3d91;padding:8px 15px;border-radius:20px}.paynow{background:#00a651;padding:16px;width:100%;border:none;border-radius:10px;color:#fff;font-weight:bold;font-size:18px;margin-top:10px}.ar{display:flex;gap:8px;margin-top:10px}.ar button{flex:1;padding:12px;border:none;border-radius:10px;color:#fff;font-weight:bold}.gpay{background:#fff!important;color:#000!important;border:2px solid #4285F4!important}.pp{background:#5f259f}.pt{background:#00b9f1}.note{font-size:12px;color:#666;text-align:center}.suc{display:none;text-align:center;padding:20px}.back{padding:10px 15px;color:#0b3d91;cursor:pointer}.badge{background:#fff3e0;color:#e86a2a;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block}.badge2{background:#e8f5e9;color:#1b7a2e;padding:6px 12px;border-radius:20px;font-size:13px;font-weight:bold;display:inline-block;margin-left:5px}</style></head><body><div class="wrap"><div id="s1"><div class="top">KreditApple</div><div class="pen">Pending Repayment</div><div class="box"><div><small>Repayment Amount / ₹</small><h2 id="a1">5,000</h2></div><div><small>A Tenure Extension/₹</small><h2 id="a2">2,000</h2></div></div><div class="ch"><h3>Repayment Channel</h3><button class="chBtn on" onclick="sc(1,this)">Channel 1</button><button class="chBtn" onclick="sc(2,this)">Channel 2</button><button class="chBtn" onclick="sc(3,this)">Channel 3</button><button class="chBtn" onclick="sc(4,this)">Channel 4</button><button class="chBtn" onclick="sc(5,this)">Channel 5</button></div><div class="row"><button class="rep" onclick="gp('repay')">Repay</button><button class="ext" onclick="gp('extension')">Extension</button></div><div class="vou" onclick="gp('repay')">Repayment Voucher Entry &gt;</div><div class="warn">Repay on time to improve your credit score. Don't pay to the personal UPI.</div><div class="un">Unlocked For Repeat Loans ₹5000.00</div></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pay - BharatPe</title>
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f2f4f7;padding:15px}
+.card{max-width:420px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.1)}
+.top{background:#0b3d91;color:#fff;padding:20px;text-align:center}
+.top h2{margin:0;font-size:22px}
+.top p{margin:5px 0 0;opacity:.9;font-size:14px}
+.body{padding:20px}
+.qr{text-align:center}
+.qr img{width:220px;height:220px;border:1px solid #ddd;border-radius:10px;padding:5px;background:#fff}
+.upi{background:#eef2ff;padding:12px;border-radius:10px;text-align:center;margin:15px 0;font-weight:bold;word-break:break-all}
+input{width:100%;padding:13px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
+button{width:100%;padding:14px;background:#0b3d91;color:#fff;border:none;border-radius:10px;font-size:16px;font-weight:bold;cursor:pointer;margin-top:10px}
+.copy{background:#fff;color:#0b3d91;border:1px solid #0b3d91;padding:8px 15px;border-radius:20px;cursor:pointer;margin-top:8px}
+.paynow{background:#00a651;font-size:18px;padding:16px}
+.appRow{display:flex;gap:8px;margin-top:10px}
+.appRow button{flex:1;padding:12px;font-size:13px;margin-top:0}
+.gpay{background:#fff;color:#000;border:2px solid #4285F4}
+.phonepe{background:#5f259f}
+.paytm{background:#00b9f1}
+.note{font-size:12px;color:#666;text-align:center;margin-top:12px}
+.success{display:none;text-align:center;padding:20px}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="top"><h2 id="displayName">BharatPe Payment</h2><p>Scan QR ya UPI ID se Pay Karo</p></div>
+<div class="body" id="payBox">
+<div class="qr"><img id="qrImg" src="" alt="QR Code Loading..."></div>
+<button class="paynow" onclick="payNow()">Pay Now - Direct Pay Karo</button>
+<div class="appRow">
+<button class="gpay" onclick="payApp('gpay')">G Pay</button>
+<button class="phonepe" onclick="payApp('phonepe')">PhonePe</button>
+<button class="paytm" onclick="payApp('paytm')">Paytm</button>
+</div>
+<p class="note">Pay Now dabate hi tumhara Payment App khul jayega.</p>
+<div class="upi"><span>UPI ID</span><br><span id="vpaText">BHARATPE.90065511470@fbpe</span></div>
+<center><button class="copy" onclick="copyUPI()">Copy UPI ID</button></center>
+<hr>
+<h3 style="text-align:center">Payment Confirmation</h3>
+<input id="name" placeholder="Apna Naam *" />
+<input id="amount" type="number" placeholder="Amount *" />
+<input id="utr" placeholder="12 Digit UTR / Transaction ID *" maxlength="12" inputmode="numeric" />
+<label style="font-size:13px;color:#555">Payment Screenshot</label>
+<input id="shot" type="file" accept="image/*" />
+<button onclick="submitPay()">Submit Confirmation</button>
+<p class="note">Payment ke baad 12 Digit UTR yahan dalo.</p>
+</div>
+<div class="success" id="successBox">
+<h2>Payment Confirmed!</h2>
+<p id="successText"></p>
+<button onclick="location.reload()">Nayi Payment Karo</button>
+</div>
+</div>
+<script>
+const params = new URLSearchParams(window.location.search);
+let vpa = params.get('vpaInput') || "BHARATPE.90065511470@fbpe";
+let amt = params.get('amntInput') || "";
+let nm = params.get('nameInput') || "";
+vpa = vpa.trim(); amt = amt.trim(); nm = nm.trim();
+document.getElementById('vpaText').innerText = vpa;
+let upiLink = "upi://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
+let qr = document.getElementById('qrImg');
+qr.src = "https://quickchart.io/qr?text=" + encodeURIComponent(upiLink) + "&size=220";
+qr.onerror = function(){ this.onerror=null; this.src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(upiLink); };
+if(nm){ document.getElementById('displayName').innerText = nm + " - Payment"; document.getElementById('name').value = nm; }
+if(amt) document.getElementById('amount').value = amt;
+function copyUPI(){ navigator.clipboard.writeText(vpa); alert("UPI Copy Ho Gaya!"); }
+function payNow(){ window.location.href = upiLink; }
+function payApp(app){
+  let link = upiLink;
+  if(app=='gpay') link = "tez://upi/pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
+  if(app=='phonepe') link = "phonepe://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
+  if(app=='paytm') link = "paytmmp://pay?pa="+vpa+"&pn="+(nm||"BharatPe")+"&am="+amt+"&cu=INR";
+  window.location.href = link;
+  setTimeout(function(){ window.location.href = upiLink; }, 1200);
+}
+function submitPay(){
+  let n=document.getElementById('name').value.trim();
+  let a=document.getElementById('amount').value.trim();
+  let u=document.getElementById('utr').value.trim();
+  if(!n || !a || !u){ alert("Please Naam, Amount aur UTR bharo"); return; }
+  if(u.length !== 12 || isNaN(u)){ alert("Please 12 Digit ka sahi UTR dalo"); return; }
+  document.getElementById('payBox').style.display='none';
+  document.getElementById('successBox').style.display='block';
+  document.getElementById('successText').innerHTML = "Naam: <b>"+n+"</b><br>Amount: <b>"+a+"</b><br>UTR: <b>"+u+"</b><br><br>Status: <b style='color:green;font-size:18px'>Payment Confirmed</b><br><span style='font-size:12px;color:#666'>UTR Verified - 12 Digit</span>";
+}
+</script>
+</body>
+</html>
